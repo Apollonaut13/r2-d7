@@ -320,6 +320,7 @@ class Roller(DroidCore):
                 'Chance Engagement',
                 'Salvage Mission',
                 'Scramble the Transmissions',
+                'Ancient Knowledge'
                 ]
         output.append(random.choice(scenarios))
         return output
