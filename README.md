@@ -1,11 +1,9 @@
 # R2-D7
-A bot for xwingtmg.slack.com.
+Supports Discord only at the moment.
 
-Supports Slack and Discord!
+Notice some missing or incorrect data? The <a href="https://github.com/gregkash16/xwing-data2/tree/master/data">Card Database</a> used by R2-D7 is managed by another member of the XWA community.
 
-<a href="https://slack.com/oauth/authorize?client_id=22172116449.94722582676&scope=bot"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
-
-<a href="https://discord.com/api/oauth2/authorize?client_id=569554290331353088&permissions=274878295104&scope=bot%20applications.commands">Add to Discord</a>
+# <a href="https://discord.com/api/oauth2/authorize?client_id=569554290331353088&permissions=274878295104&scope=bot%20applications.commands">Add to Discord</a>
 
 # Features
 ## Detects links to lists 
