@@ -63,8 +63,9 @@ class ListFormatter(DroidCore):
             return None
 
         xws_url = None
+        address = "5.161.202.51:3001"
         if match[2] == 'yasb':
-            xws_url = f"https://pattern-analyzer.app/api/yasb/xws?{match[3]}"
+            xws_url = f"http://{address}/api/yasb/xws?{match[3]}"
         if match[2] == 'launchbaynext':
             xws_url = f"https://launchbaynext.app/api/xws?lbx={match[3]}"
 
