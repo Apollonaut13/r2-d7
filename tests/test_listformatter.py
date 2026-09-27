@@ -12,7 +12,15 @@ get_xws_tests = (
     (
         "https://yasb.app/?f=Scum%20and%20Villainy&d=v8ZsZ200Z138XW10&sn=Sunny%20B!&obs=",
         {"faction": "scumandvillainy", "name": "Sunny B!", "points": 4, "pilots": [{"id": "sunnybounder", "ship": "m3ainterceptor", "points": 4, "upgrades": {"cannon": ["heavylasercannon"]}}], "vendor": {}, "version": "2.5.0"},
-    )
+    ),
+    (
+        "https://squadrondatapad.com/s/eyJ2IjoxLCJmIjoicyIsInIiOiJ4d2EiLCJtIjoicyIsInAiOlt7ImkiOiJzdW5ueWJvdW5kZXIiLCJ1IjpbImhlYXZ5bGFzZXJjYW5ub24iXX1dLCJuIjoiU3VubnkgQiEifQ",
+        {"faction": "scumandvillainy", "name": "Sunny B!", "pilots": [{"id": "sunnybounder", "upgrades": {"upgrade": ["heavylasercannon"]}}], "vendor": {}},
+    ),
+    (
+        "https://squadrondatapad.com/s/eyJ2IjoxLCJmIjoiciIsInIiOiJ4d2EiLCJtIjoicyIsInAiOlt7ImkiOiJub3JyYXdleGxleS1idGxhNHl3aW5nIn0seyJpIjoibHVrZXNreXdhbGtlciIsInUiOlsicjJkMiJdfV19",
+        {"faction": "rebelalliance", "pilots": [{"id": "norrawexley-btla4ywing"}, {"id": "lukeskywalker", "upgrades": {"upgrade": ["r2d2"]}}], "vendor": {}},
+    ),
 )
 
 @pytest.mark.parametrize('url, expected', get_xws_tests)
@@ -83,3 +91,24 @@ print_xws_legality_tests = (
 @pytest.mark.parametrize('xws, expected', print_xws_legality_tests)
 def test_print_xws_legality(testbot, xws, expected):
     assert testbot.print_xws(xws) == [expected]
+
+
+def test_squadrondatapad_link_prints(testbot):
+    # Points come from live data, so assert the shape rather than the costs.
+    url = "https://squadrondatapad.com/s/eyJ2IjoxLCJmIjoiciIsInIiOiJ4d2EiLCJtIjoicyIsInAiOlt7ImkiOiJub3JyYXdleGxleS1idGxhNHl3aW5nIn0seyJpIjoibHVrZXNreXdhbGtlciIsInUiOlsicjJkMiJdfV19"
+    [lines] = testbot.handle_url(url)
+    assert lines[0].startswith(f':rebel: *<{url}|Nameless Squadron>*')
+    assert lines[1].startswith(':btla4ywing::initiative5: _<https://xwingtmgwiki.com/Norra_Wexley|Norra Wexley>_ *[')
+    assert lines[2].startswith(':t65xwing::initiative5: _<https://xwingtmgwiki.com/Luke_Skywalker|Luke Skywalker>_: <https://xwingtmgwiki.com/R2-D2|R2-D2> *[')
+
+
+def test_squadrondatapad_first_edition_link_is_left_alone(testbot):
+    # Payload version 2 is a First Edition squad: {"v":2,"f":"r","r":"1e","m":"s","p":[{"i":"lukeskywalker"}]}
+    # The bot has no 1.0 data, so it posts nothing, like any unrecognised URL.
+    url = "https://squadrondatapad.com/s/eyJ2IjoyLCJmIjoiciIsInIiOiIxZSIsIm0iOiJzIiwicCI6W3siaSI6Imx1a2Vza3l3YWxrZXIifV19"
+    assert testbot.get_xws(url) is None
+    assert testbot.handle_url(url) == []
+
+
+def test_squadrondatapad_garbled_link_is_left_alone(testbot):
+    assert testbot.handle_url("https://squadrondatapad.com/s/bm90LWpzb24") == []
